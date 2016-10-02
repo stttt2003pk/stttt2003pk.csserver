@@ -1,0 +1,8 @@
+[servers]
+csserver1 ansible_ssh_host=192.168.100.237 ansible_user=root ansible_ssh_pass=520mamama!@#
+csserver2 ansible_ssh_host=192.168.100.238 ansible_user=root ansible_ssh_pass=520mamama!@#
+csserver3 ansible_ssh_host=192.168.100.239 ansible_user=root ansible_ssh_pass=520mamama!@#
+
+[dev]
+csserver3
+

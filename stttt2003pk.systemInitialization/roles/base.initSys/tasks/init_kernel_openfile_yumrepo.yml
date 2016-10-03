@@ -1,0 +1,18 @@
+---
+- name: copy epel-7.repo to the /etc/repos.d/
+  copy: src=epel-7.repo dest=/etc/yum.repos.d/epel-7.repo owner=root group=root mode=0644
+  when: ansible_os_family == 'RedHat'
+
+- name: yum clean all
+  shell: yum clean all
+  
+- name: yum make cache
+  shell: yum makecache
+
+- name: init system kernel parameter from a script
+  script: initKernel.sh
+  when: ansible_os_family == 'RedHat'
+
+- name: init system openfile limit from a script
+  script: openfileLimit.sh
+  when: ansible_os_family == 'RedHat'

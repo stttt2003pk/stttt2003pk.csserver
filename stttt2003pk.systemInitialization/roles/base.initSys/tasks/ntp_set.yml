@@ -1,0 +1,21 @@
+- name: Ensure NTP is stopped and disabled as configured.
+  service:
+    name: "{{ ntp_daemon }}"
+    state: stopped
+    enabled: no
+
+- name: Generate slave ntp.conf file
+  template: src=ntp.cron.hourly.j2 dest=/etc/cron.hourly/ntpdate.cron
+
+- name: Chmod ntp.conf
+  shell: chmod a+x /etc/cron.hourly/ntpdate.cron
+
+- name: Restart crond service
+  service:
+    name: crond
+    state: restarted
+    enabled: yes
+
+- name: Sync Time server now
+  shell: ntpdate "{{ master_ntp_server }}"
+  when: master_ntp_server is defined

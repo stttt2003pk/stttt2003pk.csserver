@@ -1,0 +1,4 @@
+---
+- name: init iptables from a scripte
+  script: iptablesInit.sh
+  when: ansible_os_family == 'RedHat'

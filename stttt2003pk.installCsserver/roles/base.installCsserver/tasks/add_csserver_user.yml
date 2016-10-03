@@ -1,0 +1,4 @@
+---
+- name: adduser csserver
+  user: name=csserver shell=/bin/bash home={{ csserver_home_dir }}
+  when: csserver_home_dir is defined

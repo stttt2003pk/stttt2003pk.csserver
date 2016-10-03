@@ -1,1 +1,13 @@
+#user home
 csserver_home_dir: /home/csserver
+
+#serverfiles source
+local_serverfiles_dir: /home/csserver/serverfiles/
+remote_serverfiles_dir: /home/csserver/serverfiles/
+
+#rsync to remote servers
+remote_server_name:
+  - csserver3.stttt2003pk.com
+#rsync_opts:
+syn_opts:
+  - "--exclude=*.log"

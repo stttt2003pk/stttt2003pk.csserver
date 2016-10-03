@@ -1,0 +1,9 @@
+---
+- name: rsync serverfiles to remote server
+  #synchronize: src=/home/csserver/serverfiles/ dest=rsync://{{ ansible_ssh_host }}/home/csserver/serverfiles/
+  #command: rsync -a {{ local_serverfiles_dir }} root@{{ ansible_ssh_host }}:{{ remote_serverfiles_dir }}
+  synchronize: 
+    src: "{{ local_serverfiles_dir }}"
+    dest: "{{ remote_serverfiles_dir }}"
+    rsync_opts: "{{ syn_opts }}"
+  when: local_serverfiles_dir is defined and remote_server_name is defined and remote_serverfiles_dir is defined and syn_opts is defined

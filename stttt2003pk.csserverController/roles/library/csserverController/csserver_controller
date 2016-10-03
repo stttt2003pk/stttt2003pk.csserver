@@ -1,0 +1,63 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# (c) 2012-2013, Timothy Appnel <tim@appnel.com>
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
+DOCUMENTATION = '''
+---
+module: csserver_controller
+version_added: "0.1"
+short_description: Uses commands to master the csserver
+description:
+  - C(csserver_controller) is a wrapper around the commands,meant to make controll csserver easily
+options:
+  start:
+    description:
+      - to start the csserver into tmux
+
+  stop:
+    description:
+      - to stop the csserver kill tmux session
+author: "stttt2003pk"
+notes:
+  - csserver serverfiles must be copied to the Absolute path "/home/csserver/serverfiles"
+  - dependencies: ['ntp','ntpdate','tree','iptables-services','tmux','glibc.i686','libstdc++.i686']
+'''
+
+EXAMPLES = '''
+#start the csserver
+csserver_controller: start
+
+#stop the csserver
+csserver_controller: stop
+'''
+
+RETURN = '''
+
+'''
+
+#main
+def main():
+    module = AnsibleModule(
+        argument_spec = dict(
+            'start' 
+        )
+
+
+
+
+
+    )

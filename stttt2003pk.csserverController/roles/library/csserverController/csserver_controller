@@ -48,16 +48,26 @@ csserver_controller: stop
 RETURN = '''
 
 '''
-
+#start
+def start_server(module, start):
+    start_cmd = ''
+    if start == 'yes':
+        start_cmd = '/home/csserver/serverfiles/hlds_run -game cstrike -strictportbind +ip 192.168.100.239 -port 27015 +clientport 27005 +map de_dust2 -maxplayers 32'
+    return start_cmd    
 #main
 def main():
     module = AnsibleModule(
         argument_spec = dict(
-            'start' 
+            start = dict(default='yes', type='str'),
+            stop = dict(default='yes', type='bool')
         )
 
 
-
-
-
     )
+    #rc = module.params['start']
+    rc = start_server(module, module.params['start'])
+    return module.exit_json(rc=rc)
+
+from ansible.module_utils.basic import *
+
+main()

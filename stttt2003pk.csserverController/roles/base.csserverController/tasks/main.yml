@@ -1,0 +1,4 @@
+---
+#include start or stop test
+- include: start_cstrike_server.yml
+#- include: stop_cstrike_server.yml

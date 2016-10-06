@@ -1,0 +1,209 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# (c) 2012-2013, Timothy Appnel <tim@appnel.com>
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+import commands
+import os
+DOCUMENTATION = '''
+---
+module: csserver_controller
+version_added: "0.1"
+short_description: Uses commands to master the csserver
+description:
+  - C(csserver_controller) is a wrapper around the commands,meant to make controll csserver easily
+options:
+  start:
+    description:
+      - to start the csserver into tmux
+
+  stop:
+    description:
+      - to stop the csserver kill tmux session
+author: "stttt2003pk"
+notes:
+  - csserver serverfiles must be copied to the Absolute path "/home/csserver/serverfiles"
+  - dependencies: ['ntp','ntpdate','tree','iptables-services','tmux','glibc.i686','libstdc++.i686']
+'''
+
+EXAMPLES = '''
+#start the csserver
+csserver_controller: start=yes
+
+#stop the csserver
+csserver_controller: stop=yes
+
+#choice a map
+csserver_controller: start=yes game_map=de_dust2
+'''
+
+RETURN = '''
+{
+    "changed": false, 
+    "invocation": {
+        "module_args": {
+            "clientport": 27005, 
+            "executabledir": "/home/csserver/serverfiles", 
+            "game_map": "de_dust2", 
+            "game_name": "cstrike", 
+            "ip": "0.0.0.0", 
+            "maxplayers": 16, 
+            "port": 27015, 
+            "start": false, 
+            "status": false, 
+            "stop": true
+        }
+    }, 
+    "msg": "there is no cstrike running on the server", 
+    "rc": 0
+}
+
+'''
+#check if started
+def check_status(game_name):
+    check_cmd = 'tmux list-sessions 2>&1 | awk \'{print $1}\' | grep -Ec "^%s:"' % game_name
+    status = commands.getoutput(check_cmd)
+    return status
+    #return 0 
+
+#start_cmd
+def start_server_cmd(module):
+    start_cmd=''
+    game_name = module.params['game_name']
+    ip = module.params['ip']
+    port = module.params['port']
+    clientport = module.params['clientport']
+    game_map = module.params['game_map']
+    maxplayers = module.params['maxplayers']
+
+    if game_name != '' and check_status(game_name) == '0':
+        #start_cmd = '/home/csserver/serverfiles/hlds_run -game cstrike -strictportbind +ip 192.168.100.239 -port 27015 +clientport 27005 +map de_dust2 -maxplayers 32'
+        start_cmd += './hlds_run -game %s ' % game_name
+        start_cmd += '-strictportbind '
+        if ip != '0.0.0.0':
+            start_cmd += '+ip %s ' % ip
+        else:
+            start_cmd += '+ip 0.0.0.0 ' 
+
+        if port != '27015':
+            start_cmd += '-port %i ' % port
+        else:
+            start_cmd += '-port 27015 '
+
+        if clientport != '27005':
+            start_cmd += '+clientport %i ' % clientport
+        else:
+            start_cmd += '+clientport 27005 '
+
+        if game_map != 'de_dust2':
+            start_cmd += '+map %s ' % game_map
+        else:
+            start_cmd += '+map de_dust2 '
+
+        if maxplayers != 16:
+            start_cmd += '-maxplayers %i ' % maxplayers
+        else:
+            start_cmd += '-maxplayers 16 '
+
+        start_cmd = '"' + start_cmd + '"'
+    else:
+        start_cmd = ''
+    return start_cmd    
+
+#stop_cmd
+def stop_server(module):
+    game_name = module.params['game_name']
+    stop_cmd = 'tmux send -t %s quit ENTER > /dev/null 2>&1' % game_name
+    if game_name != '' and check_status(game_name) == '0':
+        return 1
+    else:
+        return stop_cmd
+
+
+#main
+def main():
+    module = AnsibleModule(
+        argument_spec = dict(
+            start = dict(default='no', type='bool'),
+            stop = dict(default='no', type='bool'),
+            status = dict(default='no', type='bool'),
+            game_name = dict(type='str', default='cstrike'),
+            ip = dict(type='str', default= '0.0.0.0'),
+            port = dict(type='int', default= '27015'),
+            clientport = dict(type='int', default= '27005'),
+            game_map = dict(type='str', default= 'de_dust2'), 
+            maxplayers = dict(type='int', default= '16'),
+            executabledir = dict(type='str', default= '/home/csserver/serverfiles')
+        )
+
+
+    )
+
+    rc = 0
+    msg = ''
+    changed = False
+    start_cmd = ''
+    status = ''
+    if module.params['start'] == True:
+        tmux_cmd = 'tmux new-session -d -s %s ' % module.params['game_name']
+        if start_server_cmd(module) != '':
+            tmux_cmd += start_server_cmd(module)
+            os.chdir(module.params['executabledir'])
+            status = commands.getstatusoutput(tmux_cmd)
+            if status[0] == 0:
+                rc = 0
+                changed = True
+                msg = 'set up running success'
+            else:
+                rc =1
+                changed = False
+                msg = 'some parameters not right'
+        else:
+            rc = 1
+            msg = 'the server is already running, if u want to restart specified the restart=yes'
+            changed = False
+    else:
+        rc = 0
+        changed = False 
+        msg = 'if u want to set the server up, plz specified the start=yes bool'
+
+    if module.params['stop'] == True:
+        if stop_server(module) == 1:
+            rc = 0
+            changed = False
+            msg = 'there is no cstrike running on the server'
+
+        if stop_server(module) != '' and stop_server(module) != 1:
+            tmux_cmd = stop_server(module)
+            os.chdir(module.params['executabledir'])
+            status = commands.getstatusoutput(tmux_cmd)
+
+            kill_tmux_session_cmd = 'tmux kill-session -t %s > /dev/null 2>&1' % module.params['game_name']
+            status = commands.getstatusoutput(kill_tmux_session_cmd)
+            
+            if status[0] == 0:
+                rc = 0
+                changed = True
+                msg = 'stop the server graceful'
+            else:
+                rc = 1
+                changed = False
+                msg = 'stop fail'
+
+    return module.exit_json(rc=rc, changed=changed, msg=msg)
+
+from ansible.module_utils.basic import *
+
+main()

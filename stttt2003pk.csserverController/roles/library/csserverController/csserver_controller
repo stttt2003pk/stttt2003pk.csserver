@@ -40,13 +40,35 @@ notes:
 
 EXAMPLES = '''
 #start the csserver
-csserver_controller: start
+csserver_controller: start=yes
 
 #stop the csserver
-csserver_controller: stop
+csserver_controller: stop=yes
+
+#choice a map
+csserver_controller: start=yes game_map=de_dust2
 '''
 
 RETURN = '''
+{
+    "changed": false, 
+    "invocation": {
+        "module_args": {
+            "clientport": 27005, 
+            "executabledir": "/home/csserver/serverfiles", 
+            "game_map": "de_dust2", 
+            "game_name": "cstrike", 
+            "ip": "0.0.0.0", 
+            "maxplayers": 16, 
+            "port": 27015, 
+            "start": false, 
+            "status": false, 
+            "stop": true
+        }
+    }, 
+    "msg": "there is no cstrike running on the server", 
+    "rc": 0
+}
 
 '''
 #check if started
@@ -101,14 +123,20 @@ def start_server_cmd(module):
     return start_cmd    
 
 #stop_cmd
-def stop_server(module, stop, status):
-    pass
+def stop_server(module):
+    game_name = module.params['game_name']
+    stop_cmd = 'tmux send -t %s quit ENTER > /dev/null 2>&1' % game_name
+    if game_name != '' and check_status(game_name) == '0':
+        return 1
+    else:
+        return stop_cmd
+
 
 #main
 def main():
     module = AnsibleModule(
         argument_spec = dict(
-            start = dict(default='yes', type='bool'),
+            start = dict(default='no', type='bool'),
             stop = dict(default='no', type='bool'),
             status = dict(default='no', type='bool'),
             game_name = dict(type='str', default='cstrike'),
@@ -150,6 +178,29 @@ def main():
         rc = 0
         changed = False 
         msg = 'if u want to set the server up, plz specified the start=yes bool'
+
+    if module.params['stop'] == True:
+        if stop_server(module) == 1:
+            rc = 0
+            changed = False
+            msg = 'there is no cstrike running on the server'
+
+        if stop_server(module) != '' and stop_server(module) != 1:
+            tmux_cmd = stop_server(module)
+            os.chdir(module.params['executabledir'])
+            status = commands.getstatusoutput(tmux_cmd)
+
+            kill_tmux_session_cmd = 'tmux kill-session -t %s > /dev/null 2>&1' % module.params['game_name']
+            status = commands.getstatusoutput(kill_tmux_session_cmd)
+            
+            if status[0] == 0:
+                rc = 0
+                changed = True
+                msg = 'stop the server graceful'
+            else:
+                rc = 1
+                changed = False
+                msg = 'stop fail'
 
     return module.exit_json(rc=rc, changed=changed, msg=msg)
 

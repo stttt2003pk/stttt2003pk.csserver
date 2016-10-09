@@ -3,7 +3,7 @@
 #Description: install the linux steamcmd and the serverfiles for cstrike
 
 #includ
-source ./var.sh
+#source ./var.sh
 
 clear
 echo "================================="

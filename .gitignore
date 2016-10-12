@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 csserver_linux_server_shell/serverfiles/
+csserver_linux_server_shell/steamcmd/
+csserver_linux_server_shell/tmp/
 
 *.iml
 *.xml

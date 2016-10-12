@@ -3,13 +3,15 @@
 #Description: core operation choice
 
 #include:
-source ./core_message.sh
 source ./var.sh
+source ${functionsdir}/core_message.sh
+source ${functionsdir}/core_functions.sh
+source ${functionsdir}/core_dl.sh
 
 fn_getopt_generic(){
 case "${getopt}" in
 	i|install|ai)
-		source command_install.sh;;
+		command_install.sh;;
 	st|start)
 		command_start.sh;;
 	sp|stop)

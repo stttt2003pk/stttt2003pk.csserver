@@ -122,7 +122,19 @@ fn_dl_extract(){
 	fi
 }
 
-
+#trap to remove file download if cancled by Ctrl+c
+fn_fetch_trap(){
+	echo ""
+	echo -ni "downloading ${filename}:"
+	fn_print_canceled_eol_nl
+	fn_script_log_info "downloading ${filename} CANCLED"
+	sleep 1
+	rm -f "${filedir}/${filename}" | tee -a "${scriptlog}"
+	echo -ne "downloading ${filename}: "
+	fn_print_removed_eol_nl
+	fn_script_log_info "downloading ${filename}: Removed"
+	core_exit.sh
+}
 
 
 

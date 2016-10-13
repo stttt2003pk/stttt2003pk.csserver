@@ -2,6 +2,13 @@
 #Author: stttt2003pk
 #Description: create default config
 
+#include test:
+#source ./var.sh
+#source ${functionsdir}/core_message.sh
+#source ${functionsdir}/core_functions.sh
+#source ${functionsdir}/core_dl.sh
+
+
 echo ""
 echo "Creating Configs"
 echo "================================="

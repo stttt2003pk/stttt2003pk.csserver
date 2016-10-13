@@ -7,7 +7,7 @@ fn_install_server_files_steamcmd(){
 	while [ "${counter}" == "0" ]||[ "${exitcode}" != "0" ]; do
 		counter=$((counter+1))
 		cd "${steamcmddir}"
-		if [ "${counter} -le 10" ]; then
+		if [ "${counter}" -le "10" ]; then
 			# Attempt 1-4: Standard attempt
 			# Attempt 5-6: Validate attempt
 			# Attempt 7-8: Validate, delete long name dir

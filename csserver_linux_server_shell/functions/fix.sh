@@ -26,7 +26,9 @@ if [ -n "${appid}" ]; then
 # Fixes: [S_API FAIL] SteamAPI_Init() failed; unable to locate a running instance of Steam,or a local steamclient.so.
 	if [ ! -f "${HOME}/.steam/sdk32/steamclient.so" ]; then
 		fixname="steamclient.so general"
+		fn_fix_msg_start
 		mkdir -pv "${HOME}/.steam/sdk32" >> "${scriptlog}"
 		cp -v "${rootdir}/steamcmd/linux32/steamclient.so" "${HOME}/.steam/sdk32/steamclient.so" >> "${scriptlog}"
 		fn_fix_msg_end
+	fi
 fi

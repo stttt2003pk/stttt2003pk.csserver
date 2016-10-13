@@ -89,7 +89,7 @@ echo "Installing serverfiles"
 echo "================================="
 sleep 1
 install_server_files.sh
-
+install_config.sh
 fix.sh
 
 echo "================================="

@@ -22,6 +22,10 @@ install_server_files.sh(){
 	functionfile="${FUNCNAME}"
 	source ${functionsdir}/${functionfile}
 }
+install_config.sh(){
+	functionfile="${FUNCNAME}"
+	source ${functionsdir}/${functionfile}
+}
 
 core_exit.sh(){
 	functionfile="${FUNCNAME}"

@@ -84,9 +84,23 @@ echo "================================="
 sleep 1
 check_steamcmd.sh
 
+echo ""
+echo "Installing serverfiles"
+echo "================================="
+sleep 1
+install_server_files.sh
 
+fix.sh
 
+echo "================================="
+echo "Install Complete!"
+fn_script_log_info "Install Complete!"
+echo ""
+echo "To start server type:"
+echo "./core_opt start"
+echo ""
 
+core_exit.sh
 
 
 

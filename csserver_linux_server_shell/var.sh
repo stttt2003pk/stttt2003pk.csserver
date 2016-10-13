@@ -7,6 +7,9 @@
 servicename="cs-server"
 gamename="Counter-Strike 1.6"
 engine="goldsource"
+# Steam
+appid="90"
+appidmod="cstrike"
 
 # Directories
 rootdir="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))"
@@ -16,6 +19,11 @@ systemdir="${filesdir}/cstrike"
 
 tmp_dir="${rootdir}/tmp"
 steamcmddir="${rootdir}/steamcmd"
+	#cfg
+servercfg="${servicename}.cfg"
+servercfgdir="${systemdir}"
+servercfgfullpath="${servercfgdir}/${servercfg}"
+servercfgdefault="${servercfgdir}/stttt2003pk.cfg"
 #echo $filesdir
 
 # Logging

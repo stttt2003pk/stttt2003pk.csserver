@@ -3,10 +3,10 @@
 #Description: create default config
 
 #include test:
-#source ./var.sh
-#source ${functionsdir}/core_message.sh
-#source ${functionsdir}/core_functions.sh
-#source ${functionsdir}/core_dl.sh
+source ./var.sh
+source ${functionsdir}/core_message.sh
+source ${functionsdir}/core_functions.sh
+source ${functionsdir}/core_dl.sh
 
 
 echo ""

@@ -19,11 +19,12 @@ systemdir="${filesdir}/cstrike"
 
 tmp_dir="${rootdir}/tmp"
 steamcmddir="${rootdir}/steamcmd"
-	#cfg
+#cfg
 servercfg="${servicename}.cfg"
 servercfgdir="${systemdir}"
 servercfgfullpath="${servercfgdir}/${servercfg}"
 servercfgdefault="${servercfgdir}/stttt2003pk.cfg"
+executabledir="${filesdir}"
 #echo $filesdir
 
 # Logging
@@ -38,3 +39,11 @@ scriptlogdate="${scriptlogdir}/${servicename}-script-$(date '+%d-%m-%Y-%H-%M-%S'
 # Steam login
 steamuser="anonymous"
 steampass=""
+
+#executable
+executable="./hlds_run"
+ip="0.0.0.0"
+port="27015"
+clientport="27005"
+defaultmap="de_dust2"
+maxplayers="32"

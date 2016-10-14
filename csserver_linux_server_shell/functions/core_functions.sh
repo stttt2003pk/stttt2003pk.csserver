@@ -7,7 +7,10 @@ command_install.sh(){
 	functionfile="${FUNCNAME}"
 	source ${functionsdir}/${functionfile}
 }
-
+command_start.sh(){
+	functionfile="${FUNCNAME}"
+	source ${functionsdir}/${functionfile}
+}
 check_deps.sh(){
 	functionfile="${FUNCNAME}"
 	source ${functionsdir}/${functionfile}

@@ -11,6 +11,10 @@ command_start.sh(){
 	functionfile="${FUNCNAME}"
 	source ${functionsdir}/${functionfile}
 }
+command_stop.sh(){
+	functionfile="${FUNCNAME}"
+	source ${functionsdir}/${functionfile}
+}
 check_deps.sh(){
 	functionfile="${FUNCNAME}"
 	source ${functionsdir}/${functionfile}

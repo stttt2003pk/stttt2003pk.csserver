@@ -1,4 +1,4 @@
-#- include: init_kernel_openfile_yumrepo.yml
+- include: init_kernel_openfile_yumrepo.yml
 - include: yumlist.yml 
 - include: init_iptalbes.yml
 - include: ntp_set.yml

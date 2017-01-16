@@ -1,4 +1,5 @@
 ---
-yum_need_list: ['ntp','ntpdate','tree','iptables-services','tmux','glibc.i686','libstdc++.i686']
+yum_need_list: ['ntp','ntpdate','tree','iptables-services','tmux','glibc.i686',]
 ntp_daemon: ntpd
 master_ntp_server: pool.ntp.org
+#'libstdc++.i686'

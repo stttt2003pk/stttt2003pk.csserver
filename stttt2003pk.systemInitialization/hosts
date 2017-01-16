@@ -2,7 +2,15 @@
 csserver1 ansible_ssh_host=192.168.100.237 ansible_user=root ansible_ssh_pass=test
 csserver2 ansible_ssh_host=192.168.100.238 ansible_user=root ansible_ssh_pass=test
 csserver3 ansible_ssh_host=192.168.100.239 ansible_user=root ansible_ssh_pass=test
+devops ansible_ssh_host=192.168.100.167 ansible_user=root ansible_ssh_pass=test
+graphite ansible_ssh_host=192.168.100.117 ansible_user=root ansible_ssh_pass=test
 
-[dev]
+[cstrike]
 csserver3
+
+[devops]
+devops
+
+[graphite]
+graphite
 
